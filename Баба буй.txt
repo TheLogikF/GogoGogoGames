@@ -1,2 +1,122 @@
-Баба буй
-OMYGOD >:G
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Project_LIBRARY
+{
+    public class Conversion
+    {
+        private string _patternForStr;
+        private string[] _patternForArrayStrs;
+        
+        public bool TryToConvert(string str, out string[] output)
+        {
+            if (Regex.IsMatch(str, _patternForStr))
+            {
+                output = str.Split("#");
+                return true;
+            }
+            output = [];
+            return false;
+        }
+        public bool TryToConvert(string[] arrayStrs, out string[] output)
+        {
+            if (arrayStrs.Length != _patternForArrayStrs.Length)
+            {
+                output = [];
+                return false;
+            }
+
+            List<string> list = new List<string>();
+            for(int i = 0; i < arrayStrs.Length; i++)
+            {
+                if (Regex.IsMatch(arrayStrs[i], _patternForArrayStrs[i]))
+                {
+                    list.Add(arrayStrs[i]);
+                }
+                else
+                {
+                    output = [];
+                    return false;
+                }
+            }
+            output = list.ToArray();
+            return true;
+        }
+
+        public 
+    }
+
+    public interface IConversion
+    {
+        bool TryToConvert(string str, out string[] output);
+        bool TryToConvert(string[] arrayStrs, out string[] output);
+    }
+
+    public class Author : IConversion
+    {
+        private Conversion _conversion = new Conversion();
+        private string _id;
+        private string _name;
+
+        private bool TryToConvert(string str, out string[] output)
+        {
+
+        }
+
+        public Author(string obj)
+        {
+            
+        }
+    }
+    public class PublishingHouse
+    {
+        private string _id;
+        private string _name;
+    }
+    public class Publication
+    {
+        private string _id;
+        private string _name;
+    }
+    public class BookFirstPart
+    {
+        private string _id;             // Длина id = 16 символов
+        private string _name;           // Название книги: "1001 история про Сашу, Саненьку, Сасаню"
+        private string _description;    // Описание: "Шла Саша по шоссе и сосал сушку."
+        private List<Author> _author;   // Автор нашей книжки
+    }
+    public class BookSecondPart
+    {
+        private PublishingHouse _publishingHouse;// Первое издательство России
+        private Publication _publication;    // издание 1
+    }
+
+    public class CompleteBook
+    {
+        private BookFirstPart _firstPart;
+        private List<BookSecondPart> _secondPart;
+    }
+
+    public static class WorkingWithFile
+    {
+        public static string[] ReadTxtFile(string path)
+        {
+            string str;
+            using (StreamReader reader = new StreamReader(path))
+            {
+                str = reader.ReadToEnd();
+            }
+            return str.Split("\n");
+        }
+
+        public static List<T> Read<T>() where T : IConversion
+        {
+            
+        }
+    }
+}
